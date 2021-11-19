@@ -1,5 +1,4 @@
 console.log('Hello Qi');
-const canvas = document.querySelector();
 
 // Scene
 const scene = new THREE.Scene();
@@ -15,12 +14,24 @@ scene.add(cube);
 const sizes = {
   width: 800,
   height: 600,
-  ratio: width / height,
+  ratio: 4 / 3,
 };
 
 // Camera fov
-const camera = new THREE.PerspectiveCamera(75, ratio);
+const camera = new THREE.PerspectiveCamera(75, sizes.ratio);
+camera.position.z = 3;
+camera.position.x = -1;
+camera.position.y = 1;
+
 scene.add(camera);
 
+const canvas = document.getElementById('webgl');
+
 // Renderer
-const renderer = new THREE.WebGLRenderer({});
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+});
+
+renderer.setSize(sizes.width, sizes.height);
+
+renderer.render(scene, camera);
