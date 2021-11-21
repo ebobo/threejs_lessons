@@ -1,5 +1,6 @@
 import './style.css';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
 
 // Canvas
@@ -21,8 +22,8 @@ scene.add(mesh);
  * Sizes
  */
 const sizes = {
-  width: 700,
-  height: 500,
+  width: window.innerWidth,
+  height: window.innerHeight,
 };
 
 /**
@@ -30,8 +31,8 @@ const sizes = {
  */
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
 camera.position.z = 3;
-camera.position.y = 1;
-camera.lookAt(mesh.position);
+camera.position.y = 0;
+// camera.lookAt(mesh.position);
 scene.add(camera);
 
 /**
@@ -42,10 +43,29 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 
+/**
+ * Controls
+ */
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+/**
+ * Event Listenner
+ */
+window.addEventListener('resize', () => {
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(sizes.width, sizes.height);
+});
+
 // Animation
 const tick = () => {
   // mesh.rotation.y += 0.01;
-  mesh.rotation.y -= 0.01;
+  // mesh.rotation.y -= 0.01;
+  controls.update();
 
   renderer.render(scene, camera);
 
